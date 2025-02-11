@@ -1,0 +1,23 @@
+/* subscription-form.component.css */
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.9em;
+    margin-top: 5px;
+  }
+  
+  /* subscription-list.component.css */
+  table {
+    margin-top: 20px;
+  }
+  
+  td {
+    vertical-align: middle;
+  }

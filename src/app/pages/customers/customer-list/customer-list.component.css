@@ -1,0 +1,73 @@
+/* src/app/components/customer/customer-list/customer-list.component.css */
+
+/* Assurez-vous que le composant occupe toute la hauteur du viewport */
+:host {
+  display: block;
+  width: 100%;
+  min-height: 100vh; /* Prend toute la hauteur de la fenêtre */
+  background-color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Conteneur principal de la liste des clients */
+.customer-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Barre de recherche */
+.search-bar {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Conteneur du tableau pour permettre le scroll horizontal si nécessaire */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Style du tableau */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+table th {
+  background-color: #3498db;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+}
+
+table tr:hover {
+  background-color: #f5f6fa;
+}
+
+/* Zone des actions (boutons, etc.) */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}

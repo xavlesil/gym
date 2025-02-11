@@ -1,0 +1,33 @@
+/* src/app/pages/home/home.component.css */
+.home {
+    padding: 20px;
+  }
+  
+  .stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .stat {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    flex: 1 1 calc(33.333% - 40px); /* Trois cartes par ligne */
+    min-width: 200px;
+  }
+  
+  .stat h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #34495e;
+  }
+  
+  .stat p {
+    margin: 10px 0 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3498db;
+  }

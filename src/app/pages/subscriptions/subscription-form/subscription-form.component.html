@@ -1,0 +1,35 @@
+<div class="card">
+    <h2>Souscrire un client à une offre</h2>
+    <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+      <!-- Sélection du client -->
+      <div class="form-group">
+        <label>Client</label>
+        <select formControlName="customerId">
+          <option *ngFor="let customer of customers" [value]="customer.id">
+            {{ customer.firstName }} {{ customer.lastName }}
+          </option>
+        </select>
+        <div class="error-message" *ngIf="subscriptionForm.get('customerId')?.invalid">
+          Sélectionnez un client
+        </div>
+      </div>
+  
+      <!-- Sélection de l'offre -->
+      <div class="form-group">
+        <label>Offre</label>
+        <select formControlName="offerId">
+          <option *ngFor="let offer of offers" [value]="offer.id">
+            {{ offer.name }} ({{ offer.price }}€/mois)
+          </option>
+        </select>
+        <div class="error-message" *ngIf="subscriptionForm.get('offerId')?.invalid">
+          Sélectionnez une offre
+        </div>
+      </div>
+  
+      <div class="form-actions">
+        <button type="submit" [disabled]="subscriptionForm.invalid">Valider</button>
+        <button type="button" (click)="onCancel()">Annuler</button>
+      </div>
+    </form>
+  </div>

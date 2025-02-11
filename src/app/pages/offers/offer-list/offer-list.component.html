@@ -1,0 +1,29 @@
+<div class="card">
+  <h2>Liste des offres</h2>
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher une offre...">
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Durée (mois)</th>
+        <th>Prix mensuel</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let offer of filteredOffers">
+        <!-- Utilisation des propriétés du modèle Pack -->
+        <td>{{ offer.offerName }}</td>
+        <td>{{ offer.durationMonths }}</td>
+        <td>{{ offer.monthlyPrice }} €</td>
+        <td class="actions">
+          <button (click)="onEdit(offer.id)">Modifier</button>
+          <button class="danger" (click)="onDelete(offer.id)">Supprimer</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="onAdd()">Ajouter une offre</button>
+</div>

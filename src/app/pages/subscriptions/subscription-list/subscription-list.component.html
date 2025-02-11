@@ -1,0 +1,24 @@
+<div class="card">
+    <h2>Abonnements actifs</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Offre</th>
+          <th>Début</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sub of subscriptions">
+          <td>{{ getCustomerName(sub.customerId) }}</td>
+          <td>{{ getOfferName(sub.offerId) }}</td>
+          <td>{{ sub.startDate | date:'dd/MM/yyyy' }}</td>
+          <td class="actions">
+            <button class="danger" (click)="onCancel(sub.id)">Résilier</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button (click)="onAdd()">Nouvel abonnement</button>
+  </div>

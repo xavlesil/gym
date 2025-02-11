@@ -1,0 +1,21 @@
+.sidenav-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+  background: #f4f4f4;
+}
+
+.dashboard-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+
+.stat-card {
+  width: 30%;
+  text-align: center;
+  padding: 20px;
+}

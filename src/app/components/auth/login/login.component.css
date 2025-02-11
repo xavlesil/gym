@@ -1,0 +1,17 @@
+/* src/app/components/auth/login/login.component.css */
+.container {
+    padding-top: 50px;
+  }
+  
+  mat-card {
+    padding: 20px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  button {
+    width: 100%;
+  }

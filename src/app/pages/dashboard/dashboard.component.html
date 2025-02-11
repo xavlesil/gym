@@ -1,11 +1,10 @@
+<!-- dashboard.component.html -->
 <mat-sidenav-container class="sidenav-container">
-  <!-- Barre latérale -->
   <mat-sidenav mode="side" opened class="sidenav">
     <app-sidebar></app-sidebar>
   </mat-sidenav>
-
-  <!-- Contenu principal -->
   <mat-sidenav-content>
+    <!-- Ici, seul le contenu des routes enfants sera affiché -->
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
