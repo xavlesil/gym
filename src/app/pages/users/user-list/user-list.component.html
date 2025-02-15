@@ -1,0 +1,17 @@
+<button class="add-btn" (click)="navigateToAddUser()">Ajouter un utilisateur</button>
+
+<table>
+  <tr>
+    <th>Nom d'utilisateur</th>
+    <th>Rôle</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{ user.username }}</td>
+    <td>{{ user.roles || 'Aucun rôle' }}</td>
+    <td>
+      <button class="edit-btn" (click)="user.id !== undefined && navigateToEditUser(user.id)">Modifier</button>
+      <button class="cancel-btn" (click)="user.id !== undefined && deleteUser(user.id)">Supprimer</button>
+    </td>
+  </tr>
+</table>

@@ -1,35 +1,82 @@
-<div class="card">
-    <h2>Souscrire un client à une offre</h2>
-    <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
-      <!-- Sélection du client -->
-      <div class="form-group">
-        <label>Client</label>
-        <select formControlName="customerId">
-          <option *ngFor="let customer of customers" [value]="customer.id">
-            {{ customer.firstName }} {{ customer.lastName }}
-          </option>
-        </select>
-        <div class="error-message" *ngIf="subscriptionForm.get('customerId')?.invalid">
-          Sélectionnez un client
-        </div>
+<div class="form-container">
+  <h2 class="form-title">{{ selectedOffer ? 'Souscription' : 'Nouvel Abonnement' }}</h2>
+
+  <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+    <!-- Messages d'état -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Sélection client -->
+    <div class="mb-3">
+      <label class="form-label">Client *</label>
+      <select 
+        class="form-select"
+        formControlName="customerId"
+        [class.is-invalid]="subscriptionForm.get('customerId')?.invalid && subscriptionForm.get('customerId')?.touched"
+      >
+        <option value="" disabled>Choisir un client...</option>
+        <option 
+          *ngFor="let customer of customers" 
+          [value]="customer.id"
+        >
+          {{ customer.lastName }} {{ customer.firstName }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Sélection offre -->
+    <div class="mb-3">
+      <label class="form-label">Offre d'abonnement *</label>
+      <select 
+        class="form-select"
+        formControlName="packId"
+        (change)="onOfferChange()"
+        [class.is-invalid]="subscriptionForm.get('packId')?.invalid && subscriptionForm.get('packId')?.touched"
+      >
+        <option value="" disabled>Choisir une offre...</option>
+        <option 
+          *ngFor="let offer of offers" 
+          [value]="offer.id"
+        >
+          {{ offer.offerName }} ({{ offer.monthlyPrice }}€/mois - {{ offer.durationMonths }} mois)
+        </option>
+      </select>
+    </div>
+
+    <!-- Dates calculées -->
+    <div *ngIf="selectedOffer" class="date-info">
+      <div class="date-item">
+        <span>Date de début :</span>
+        <strong>{{ subscriptionForm.value.startDate | date:'dd/MM/yyyy' }}</strong>
       </div>
-  
-      <!-- Sélection de l'offre -->
-      <div class="form-group">
-        <label>Offre</label>
-        <select formControlName="offerId">
-          <option *ngFor="let offer of offers" [value]="offer.id">
-            {{ offer.name }} ({{ offer.price }}€/mois)
-          </option>
-        </select>
-        <div class="error-message" *ngIf="subscriptionForm.get('offerId')?.invalid">
-          Sélectionnez une offre
-        </div>
+      <div class="date-item">
+        <span>Date de fin :</span>
+        <strong>{{ subscriptionForm.value.endDate | date:'dd/MM/yyyy' }}</strong>
       </div>
-  
-      <div class="form-actions">
-        <button type="submit" [disabled]="subscriptionForm.invalid">Valider</button>
-        <button type="button" (click)="onCancel()">Annuler</button>
-      </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- Boutons -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="!subscriptionForm.valid"
+      >
+        <i class="bi bi-check-circle"></i> Confirmer
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-outline-secondary"
+        (click)="onCancel()"
+      >
+        <i class="bi bi-x-circle"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>

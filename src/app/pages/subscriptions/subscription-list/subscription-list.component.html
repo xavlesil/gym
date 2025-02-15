@@ -1,24 +1,48 @@
-<div class="card">
-    <h2>Abonnements actifs</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Client</th>
-          <th>Offre</th>
-          <th>Début</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let sub of subscriptions">
-          <td>{{ getCustomerName(sub.customerId) }}</td>
-          <td>{{ getOfferName(sub.offerId) }}</td>
-          <td>{{ sub.startDate | date:'dd/MM/yyyy' }}</td>
-          <td class="actions">
-            <button class="danger" (click)="onCancel(sub.id)">Résilier</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button (click)="onAdd()">Nouvel abonnement</button>
+<div class="container">
+  <div class="header">
+    <h2>Gestion des Abonnements</h2>
+    <button class="btn btn-primary" (click)="navigateToAddSubscription()">
+      <i class="bi bi-plus-circle"></i> Nouvel abonnement
+    </button>
   </div>
+
+  <div *ngIf="loading" class="loading">Chargement en cours...</div>
+  
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <table *ngIf="!loading && subscriptions.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>Client</th>
+        <th>Offre</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sub of subscriptions">
+        <td>{{ sub.customer?.firstName }} {{ sub.customer?.lastName }}</td>
+        <td>{{ sub.pack?.offerName || 'Non spécifié' }}</td>
+        <td>
+          <span [class]="'status-badge ' + sub.status?.toLowerCase()">
+            {{ sub.status || 'INCONNU' }}
+          </span>
+        </td>
+        <td>
+          <button 
+            class="btn btn-danger btn-sm"
+            (click)="cancelSubscription(sub.id)"
+          >
+            <i class="bi bi-x-circle"></i> Résilier
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading && subscriptions.length === 0" class="no-data">
+    Aucun abonnement trouvé
+  </div>
+</div>

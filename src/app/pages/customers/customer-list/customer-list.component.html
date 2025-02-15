@@ -9,7 +9,7 @@
       <tr>
         <th>Prénom</th>
         <th>Nom</th>
-        <th>Email</th>
+        <th>Abonnement actif</th>
         <th>Téléphone</th>
         <th>Actions</th>
       </tr>
@@ -18,7 +18,7 @@
       <tr *ngFor="let customer of filteredCustomers">
         <td>{{ customer.firstName }}</td>
         <td>{{ customer.lastName }}</td>
-        <td>{{ customer.email }}</td>
+        <td>{{ customer.activeSubscription ? 'Oui' : 'Non' }}</td>
         <td>{{ customer.phoneNumber }}</td>
         <td class="actions">
           <button (click)="onEdit(customer.id)">Modifier</button>

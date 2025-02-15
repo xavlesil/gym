@@ -1,11 +1,14 @@
-<mat-sidenav-container class="sidenav-container">
-  <!-- Barre latérale -->
+<!-- app.component.html -->
+
+<!-- Layout complet (avec sidebar) affiché uniquement quand l'utilisateur est connecté -->
+<mat-sidenav-container *ngIf="isLoggedIn()" class="sidenav-container">
   <mat-sidenav mode="side" opened class="sidenav">
     <app-sidebar></app-sidebar>
   </mat-sidenav>
-
-  <!-- Contenu principal -->
   <mat-sidenav-content>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- Affichage simple (sans sidebar) pour les pages non protégées (login, etc.) -->
+<router-outlet *ngIf="!isLoggedIn()"></router-outlet>

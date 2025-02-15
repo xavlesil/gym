@@ -32,7 +32,7 @@ export class CustomerFormComponent implements OnInit {
       lastName: ['', Validators.required],
       phoneNumber: ['', Validators.required], // Correspondance avec le backend
       registrationDate: [new Date().toISOString().split('T')[0]], // Définit la date du jour par défaut
-      activeSubscription: [false] // Valeur par défaut
+      // Valeur par défaut
     });
   }
 

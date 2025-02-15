@@ -1,39 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerService } from '../../../services/customer.service';
 import { OfferService } from '../../../services/offer.service';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { Router } from '@angular/router';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-subscription-form',
+  standalone: true,
   templateUrl: './subscription-form.component.html',
   styleUrls: ['./subscription-form.component.css'],
   imports: [
     CommonModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class SubscriptionFormComponent implements OnInit {
   subscriptionForm: FormGroup;
   customers: any[] = [];
   offers: any[] = [];
+  selectedOffer: any | null = null;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
     private offerService: OfferService,
-    private subscriptionService: SubscriptionService,
+    @Inject(SubscriptionService) private subscriptionService: SubscriptionService,
     private router: Router
   ) {
     this.subscriptionForm = this.fb.group({
       customerId: ['', Validators.required],
-      offerId: ['', Validators.required]
+      packId: ['', Validators.required]
     });
   }
 
@@ -43,25 +46,65 @@ export class SubscriptionFormComponent implements OnInit {
   }
 
   loadCustomers(): void {
-    this.customerService.getCustomers().subscribe(
-      data => this.customers = data,
-      error => console.error('Erreur:', error)
-    );
+    this.customerService.getCustomers().subscribe({
+      next: (data) => this.customers = data,
+      error: (error) => {
+        console.error('Erreur clients:', error);
+        this.errorMessage = 'Impossible de charger les clients';
+      }
+    });
   }
 
   loadOffers(): void {
-    this.offerService.getOffers().subscribe(
-      data => this.offers = data,
-      error => console.error('Erreur:', error)
-    );
+    this.offerService.getOffers().subscribe({
+      next: (data) => this.offers = data,
+      error: (error) => {
+        console.error('Erreur offres:', error);
+        this.errorMessage = 'Impossible de charger les offres';
+      }
+    });
+  }
+
+  onOfferChange(): void {
+    const offerId = this.subscriptionForm.get('packId')?.value;
+    this.selectedOffer = this.offers.find(offer => offer.id === offerId);
+
+    if (this.selectedOffer?.durationMonths) {
+      const startDate = new Date();
+      const endDate = new Date(startDate);
+      endDate.setMonth(startDate.getMonth() + this.selectedOffer.durationMonths);
+
+      this.subscriptionForm.patchValue({
+        startDate: startDate.toISOString().split('T')[0],
+        endDate: endDate.toISOString().split('T')[0]
+      });
+    }
   }
 
   onSubmit(): void {
+    this.errorMessage = null;
+    this.successMessage = null;
+
     if (this.subscriptionForm.valid) {
-      this.subscriptionService.createSubscription(this.subscriptionForm.value).subscribe(
-        () => this.router.navigate(['/dashboard/subscriptions']),
-        error => console.error('Erreur:', error)
-      );
+      const formData = {
+        customer: { id: this.subscriptionForm.value.customerId },
+        pack: { id: this.subscriptionForm.value.packId },
+        startDate: this.subscriptionForm.value.startDate,
+        endDate: this.subscriptionForm.value.endDate
+      };
+
+      this.subscriptionService.createSubscription(formData).subscribe({
+        next: (response) => {
+          this.successMessage = 'Abonnement créé avec succès!';
+          setTimeout(() => this.router.navigate(['/dashboard/subscriptions']), 1500);
+        },
+        error: (error) => {
+          console.error('Erreur création:', error);
+          this.errorMessage = error.error?.message || 'Erreur lors de la création';
+        }
+      });
+    } else {
+      this.errorMessage = 'Veuillez remplir tous les champs obligatoires';
     }
   }
 
@@ -69,3 +112,5 @@ export class SubscriptionFormComponent implements OnInit {
     this.router.navigate(['/dashboard/subscriptions']);
   }
 }
+
+// Removed custom Inject function

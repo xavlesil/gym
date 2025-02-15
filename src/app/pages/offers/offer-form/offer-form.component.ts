@@ -27,10 +27,11 @@ export class OfferFormComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.offerForm = this.fb.group({
-      name: ['', Validators.required],
-      duration: ['', [Validators.required, Validators.min(1)]],
-      price: ['', [Validators.required, Validators.min(0)]]
+      offerName: ['', Validators.required],
+      durationMonths: ['', [Validators.required, Validators.min(1)]],
+      monthlyPrice: ['', [Validators.required, Validators.min(0)]]
     });
+    
   }
 
   ngOnInit(): void {
@@ -47,23 +48,26 @@ export class OfferFormComponent implements OnInit {
       (error) => console.error('Erreur:', error)
     );
   }
-
   onSubmit(): void {
+    console.log("onSubmit appelé", this.offerForm.value);
     if (this.offerForm.valid) {
       const offerData = this.offerForm.value;
       if (this.isEditMode && this.offerId) {
         this.offerService.updateOffer(this.offerId, offerData).subscribe(
           () => this.router.navigate(['/dashboard/offers']),
-          (error) => console.error('Erreur:', error)
+          (error) => console.error('Erreur lors de la modification:', error)
         );
       } else {
         this.offerService.addOffer(offerData).subscribe(
           () => this.router.navigate(['/dashboard/offers']),
-          (error) => console.error('Erreur:', error)
+          (error) => console.error('Erreur lors de l\'ajout:', error)
         );
       }
+    } else {
+      console.error("Le formulaire n'est pas valide");
     }
   }
+  
 
   onCancel(): void {
     this.router.navigate(['/dashboard/offers']);

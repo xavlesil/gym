@@ -1,81 +1,61 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { SubscriptionService } from '../../../services/subscription.service';
-import { CustomerService } from '../../../services/customer.service';
-import { OfferService } from '../../../services/offer.service';
 import { Router } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
 
 @Component({
-  selector: 'app-subscription-list',
+  selector: 'app-list-subscription',
   templateUrl: './subscription-list.component.html',
   styleUrls: ['./subscription-list.component.css'],
-  providers: [DatePipe],
-  imports: [
-    CommonModule,
-    FormsModule
-  ]
+  standalone: true,
+  imports: [CommonModule]
 })
-export class SubscriptionListComponent implements OnInit {
+export class ListSubscriptionComponent implements OnInit {
   subscriptions: any[] = [];
-  customers: any[] = [];
-  offers: any[] = [];
+  loading: boolean = false;
+  errorMessage: string | null = null;
 
   constructor(
-    private subscriptionService: SubscriptionService,
-    private customerService: CustomerService,
-    private offerService: OfferService,
+    @Inject(SubscriptionService) private subscriptionService: SubscriptionService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadSubscriptions();
-    this.loadCustomers();
-    this.loadOffers();
   }
 
   loadSubscriptions(): void {
-    this.subscriptionService.getSubscriptions().subscribe(
-      data => this.subscriptions = data,
-      error => console.error('Erreur:', error)
-    );
+    this.loading = true;
+    this.errorMessage = null;
+    
+    this.subscriptionService.getSubscriptions().subscribe({
+      next: (data) => {
+        this.subscriptions = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des abonnements';
+        this.loading = false;
+        console.error(err);
+      }
+    });
   }
 
-  loadCustomers(): void {
-    this.customerService.getCustomers().subscribe(
-      data => this.customers = data
-    );
-  }
-
-  loadOffers(): void {
-    this.offerService.getOffers().subscribe(
-      data => this.offers = data
-    );
-  }
-
-  getCustomerName(customerId: number): string {
-    const customer = this.customers.find(c => c.id === customerId);
-    return customer ? `${customer.firstName} ${customer.lastName}` : 'Inconnu';
-  }
-
-  getOfferName(offerId: number): string {
-    const offer = this.offers.find(o => o.id === offerId);
-    return offer ? offer.name : 'Offre supprimée';
-  }
-
-  onAdd(): void {
-    this.router.navigate(['/dashboard/subscriptions/add']);
-  }
-
-  onCancel(id: number): void {
-    if (confirm('Résilier cet abonnement ?')) {
-      this.subscriptionService.cancelSubscription(id).subscribe(
-        () => this.loadSubscriptions(),
-        error => console.error('Erreur:', error)
-      );
+  cancelSubscription(id: number): void {
+    if (confirm('Êtes-vous sûr de vouloir résilier cet abonnement ?')) {
+      this.subscriptionService.cancelSubscription(id).subscribe({
+        next: () => {
+          this.loadSubscriptions();
+        },
+        error: (err) => {
+          alert('Erreur lors de la résiliation');
+          console.error(err);
+        }
+      });
     }
+  }
+
+  navigateToAddSubscription(): void {
+    this.router.navigate(['/dashboard/subscriptions/add']);
   }
 }

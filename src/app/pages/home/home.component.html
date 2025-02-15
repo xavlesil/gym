@@ -1,14 +1,14 @@
 <!-- src/app/components/home/home.component.html -->
 <div class="home">
-    <h2>Statistiques</h2>
-    <div class="stats">
-      <div class="stat">
-        <h3>Clients actifs</h3>
-        <p>150</p> <!-- Remplace par une valeur dynamique -->
-      </div>
-      <div class="stat">
-        <h3>Chiffre d'affaires mensuel</h3>
-        <p>15 000 €</p> <!-- Remplace par une valeur dynamique -->
-      </div>
+  <h2>Statistiques</h2>
+  <div class="stats">
+    <div class="stat">
+      <h3>Clients actifs</h3>
+      <p>{{ activeCustomers }}</p> <!-- Valeur dynamique liée à la propriété activeCustomers -->
+    </div>
+    <div class="stat">
+      <h3>Chiffre d'affaires mensuel</h3>
+      <p>{{ monthlyRevenue | currency:'EUR':'symbol':'1.0-0' }}</p> <!-- Valeur dynamique avec pipe currency -->
     </div>
   </div>
+</div>

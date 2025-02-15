@@ -20,6 +20,7 @@ export class CustomerListComponent implements OnInit {
   constructor(
     @Inject(CustomerService) private customerService: CustomerService,
     private router: Router
+    
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +32,7 @@ export class CustomerListComponent implements OnInit {
       (data) => {
         this.customers = data;
         this.filteredCustomers = data;
+        console.log(this.customers)
       },
       (error) => {
         console.error('Erreur lors du chargement des clients', error);

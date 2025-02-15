@@ -1,21 +1,22 @@
 <div class="card">
-    <h2>{{ isEditMode ? 'Modifier une offre' : 'Ajouter une offre' }}</h2>
-    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">Nom de l'offre</label>
-        <input type="text" id="name" formControlName="name">
-      </div>
-      <div class="form-group">
-        <label for="duration">Durée (mois)</label>
-        <input type="number" id="duration" formControlName="duration">
-      </div>
-      <div class="form-group">
-        <label for="price">Prix mensuel (€)</label>
-        <input type="number" id="price" formControlName="price">
-      </div>
-      <div class="form-actions">
-        <button type="submit" [disabled]="offerForm.invalid">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
-        <button type="button" (click)="onCancel()">Annuler</button>
-      </div>
-    </form>
-  </div>
+  <h2>{{ isEditMode ? 'Modifier une offre' : 'Ajouter une offre' }}</h2>
+  <form [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="offerName">Nom de l'offre</label>
+      <input type="text" id="offerName" formControlName="offerName">
+    </div>
+    <div class="form-group">
+      <label for="durationMonths">Durée (mois)</label>
+      <input type="number" id="durationMonths" formControlName="durationMonths">
+    </div>
+    <div class="form-group">
+      <label for="monthlyPrice">Prix mensuel (FCFA)</label>
+      <input type="number" id="monthlyPrice" formControlName="monthlyPrice">
+    </div>
+    <div class="form-actions">
+      <button type="submit" [disabled]="offerForm.invalid">{{ isEditMode ? 'Modifier' : 'Ajouter' }}</button>
+
+      <button type="button" (click)="onCancel()">Annuler</button>
+    </div>
+  </form>
+</div>

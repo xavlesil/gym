@@ -1,7 +1,8 @@
 <div class="card">
   <h2>Liste des offres</h2>
   <div class="search-bar">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Rechercher une offre...">
+    <input type="text" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Rechercher une offre...">
+
   </div>
   <table>
     <thead>

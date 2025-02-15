@@ -38,12 +38,12 @@ export class OfferListComponent implements OnInit {
       (error) => console.error('Erreur:', error)
     );
   }
-
   onSearch(): void {
     this.filteredOffers = this.offers.filter(offer =>
-      offer.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      offer.offerName.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
+  
 
   onAdd(): void {
     this.router.navigate(['/dashboard/offers/add']);
